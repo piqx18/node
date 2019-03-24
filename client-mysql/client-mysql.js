@@ -14,13 +14,11 @@ let clientMySQL = mysql.createConnection({
 
 let requestToDataBase = async (query) => {
     return new Promise((resolve, reject) => {
-        console.log(`Try to query DB ${query}`)
         clientMySQL.query(query, function(error, result) {
                 if (error) 
                 {
                     reject(error)
                 }
-                console.log(`Successfull, response - ${JSON.stringify(result)}`)
                 resolve(result)
         })  
     })

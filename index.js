@@ -3,8 +3,10 @@ const bodyParser = require('body-parser')
 const app = express();
 const authorization = require('./routing/Auth/auth')
 const answerAccessDenied = require('./response')
+const createUser = require('./routing/User/create-user')
 
 const port = process.env.PORT || 3000
+const token = process.env.TOKEN || 'root'
 
 app.use(bodyParser.json());
 
@@ -25,11 +27,15 @@ app.post('/api/v1/user/authorization', async(request, response) => {
 app.post('/api/v1/user/createuser', async(request, response) => {
     try {
         let params = request.body;
-        if (request.body.header.token !== 'root') {
-            answerAccessDenied();
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
         }
         else {
-
+            const result = await createUser(params).then( result => {
+                response.send(result)
+            });
+            response.send(result)
         }
     }
     catch(ex){
