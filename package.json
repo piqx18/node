@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Серверная часть",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\"",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piqx18/node.git"
+  },
+  "dependencies": {
+    "lodash": "^4.1.0",
+    "express": "^4.16.4",
+    "mysql": "2.16.0"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "r.druzhinin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/piqx18/node/issues"
+  },
+  "homepage": "https://github.com/piqx18/node#readme"
+}
