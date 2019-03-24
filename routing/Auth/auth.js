@@ -1,19 +1,5 @@
-const clientMySQL = require('../../client-mysql/client-mysql')
+const requestToDataBase = require('../../client-mysql/client-mysql')
 const mysql = require('mysql')
-
-let requestToBase = async function(query) {
-    return new Promise((resolve, reject) => {
-        console.log(`try to query ${query}`)
-        clientMySQL.query(query, function(error, result) {
-                if (error) 
-                {
-                    reject(error)
-                }
-                console.log(`Successfull reqeust, response - ${JSON.stringify(result)}`)
-                resolve(result)
-        })  
-    })
-}
 
 let queryCheckUser = (login) => {
     return `select * from users where login=` + mysql.escape(login)
@@ -27,23 +13,43 @@ let answer = (user, rights) => {
     return {
         result: `successfull`,
         dataAuth: user[0], 
-        ...{ token: 'root' },
+        ... { token: 'root' },
         dataAccess: rights[0]
+        // todo надо ли править 1 -> true
     }
 }
 
-let authoriazation = async function(data) {
+let answerAccessDenied = (user) => {
+    return {
+        result: 'error',
+        message: 'ACCESS DENIED',
+        dataAuth: user[0]
+    }
+}
+
+let answerNotFound = (user) => {
+    return {
+        result: 'error',
+        message: 'NOT FOUND'
+    }
+}
+
+let authoriazation = async(data) => {
     let login = data.login;
     let password = data.password;
     let query = queryCheckUser(login)
-    let user = await requestToBase(query)
+    let user = await requestToDataBase(query)
 
-    if (user.length > 0) {
-        if(user[0].password == password) {
-            query = queryTakeRights(user[0].user_id)
-            let rights = await requestToBase(query);
-            return answer(user, rights)
-        } 
+    if (user.length > 0 && user[0].password === password) {
+        query = queryTakeRights(user[0].user_id)
+        let rights = await requestToDataBase(query);
+        return answer(user, rights) 
+    }
+    else if(user.length === 0) {
+        return answerNotFound(user)
+    }
+    else if(user.length > 0 && user[0].password !== password) {
+        return answerAccessDenied(user)
     }
 }
 
