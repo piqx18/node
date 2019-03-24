@@ -9,7 +9,7 @@ let queryTakeRights = (userId) => {
      return 'select * from rights where user_id=' + mysql.escape(userId)
 }
 
-let answer = (user, rights) => {
+let answerSuccesfull = (user, rights) => {
     return {
         result: `successfull`,
         dataAuth: user[0], 
@@ -43,7 +43,7 @@ let authoriazation = async(data) => {
     if (user.length > 0 && user[0].password === password) {
         query = queryTakeRights(user[0].user_id)
         let rights = await requestToDataBase(query);
-        return answer(user, rights) 
+        return answerSuccesfull(user, rights) 
     }
     else if(user.length === 0) {
         return answerNotFound(user)
