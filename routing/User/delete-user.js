@@ -4,7 +4,8 @@ const requestToDataBase = require('../../client-mysql/client-mysql')
 const deleteRights = async(userIds) => {
     console.log(`Try to delete records from table Rights with id - ${userIds}`)
     const query = `DELETE FROM rights WHERE user_id in (${userIds})`
-    await requestToDataBase(query).then(
+    await requestToDataBase(query)
+    .then(
         result => {
             console.log(`Records with id ${userIds} purged - ${JSON.stringify(result)}`)
         }

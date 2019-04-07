@@ -45,8 +45,8 @@ const insertRights = async(dataAccess, userId) => {
      '${+dataAccess.allowRead}', '${+dataAccess.allowWrite}', '${+dataAccess.allowPartialEdit}', '${+dataAccess.allowEdit}', '${+dataAccess.allowManage}', \
     '${+dataAccess.allowPrint}', \
     '${+dataAccess.blocked}')`
-    await requestToDataBase(query).then(
-        result => {
+    await requestToDataBase(query)
+    .then(result => {
             console.log(`Create record in Rights with id - ${result.insertId}`)
         }
     ).catch(error => {
