@@ -1,1 +1,1 @@
-# node
+# Backend part of Information System for museum

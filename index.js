@@ -13,7 +13,8 @@ const createTypeMonument = require('./routing/types-monument/create-type-monumen
 const getTypesMonuments = require('./routing/types-monument/get-type-monument')
 const deleteTypesMonuments = require('./routing/types-monument/delete-monument')
 const createRestoreItem = require('./routing/restore-Items/create-restore-items')
-
+const getRestoreItems = require('./routing/restore-Items/get-restore-item')
+const deleteRestoreItems = require('./routing/restore-Items/delete-restore-item')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -235,5 +236,44 @@ app.post('/api/v1/restore-item/create', async(request, response) => {
     }
 })
 
+app.post('/api/v1/restore-item/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getRestoreItems(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/restore-item/delete', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await deleteRestoreItems(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
 
 app.listen(port);

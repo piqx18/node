@@ -80,20 +80,11 @@ const getUsers = async (params) => {
         const userData = await getUser(params.ids)
         const accountsData = await getAccounts(params.ids)
         const rightsData = await getRights(params.ids)
-        let users = []
-        const lenghtUsers = userData.length
-        for (let i=0; i< lenghtUsers; i++) {
-            users.push(
-                {
-                    userData,
-                    accountsData,
-                    rightsData
-                }
-            )
-        }
         return {
             result: 'successful',
-            users
+            userData,
+            accountsData,
+            rightsData
         }
     }
     else {
