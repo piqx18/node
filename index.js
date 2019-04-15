@@ -9,7 +9,7 @@ const getUsers = require('./routing/User/get-users')
 const createCollection = require('./routing/collections/create-collections')
 const deleteCollections = require('./routing/collections/delete-collections')
 const getCollections = require('./routing/collections/get-collections')
-const createTypeMonument = require('./routing/types-monument/create-type-monument')
+const createTypeMonument = require('./routing/types-monument/create-type-monument').createTypeMonument
 const getTypesMonuments = require('./routing/types-monument/get-type-monument')
 const deleteTypesMonuments = require('./routing/types-monument/delete-monument')
 
