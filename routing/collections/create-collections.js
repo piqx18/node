@@ -19,7 +19,7 @@ const insertCollection = async(params) => {
     '${params.chief}')`
     const result = await requestToDataBase(query).then(result=> {
         console.log(`Obtained record - ${JSON.stringify(result)}`)
-        return result
+        return result.insertId
     }).catch(error => {
         console.log(error)
         throw error
@@ -40,10 +40,11 @@ const createCollection = async(params) => {
         return collectionIsExist(params)
     }
     else if(_checkCollection.length === 0) {
-        await insertCollection(params)
+        const collectionId = await insertCollection(params)
         return {
             result: "successful",
-            message: 'collections created'
+            message: 'collections created',
+            collectionId
         }
     }
 }
