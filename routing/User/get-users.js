@@ -91,7 +91,10 @@ const getUsers = async (params) => {
                 }
             )
         }
-        return users
+        return {
+            result: 'successful',
+            users
+        }
     }
     else {
         return invalidRequest()

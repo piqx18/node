@@ -9,6 +9,9 @@ const getUsers = require('./routing/User/get-users')
 const createCollection = require('./routing/collections/create-collections')
 const deleteCollections = require('./routing/collections/delete-collections')
 const getCollections = require('./routing/collections/get-collections')
+const createTypeMonument = require('./routing/types-monument/create-type-monument')
+const getTypesMonuments = require('./routing/types-monument/get-type-monument')
+const deleteTypesMonuments = require('./routing/types-monument/delete-monument')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -149,5 +152,68 @@ app.post('/api/v1/collections/getcollections', async(request, response) => {
         response.send({ error: ex.toString()})
     }
 })
+
+app.post('/api/v1/typesmonument/createtypemonument', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createTypeMonument(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/typesmonument/gettypemonument', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getTypesMonuments(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/typesmonument/deletetypemonument', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await deleteTypesMonuments(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+
+
 
 app.listen(port);

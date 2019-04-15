@@ -1,13 +1,13 @@
 const requestToDataBase = require('../../client-mysql/client-mysql')
 
-const selectCollections = async (ids) => {
+const selectTypeMonument = async (ids) => {
     console.log(`Try to select collections with ids - ${ids}`)
     let query = ''
     if (ids.length) {
-        query = `SELECT * FROM collections WHERE id in (${ids})`
+        query = `SELECT * FROM types_of_monument WHERE id in (${ids})`
     }
     else {
-        query = 'SELECT * FROM collections'
+        query = 'SELECT * FROM types_of_monument'
     }
     const result = await requestToDataBase(query)
     .then(result => {
@@ -29,9 +29,9 @@ const invalidRequest = () => {
     }
 }
 
-const getCollections = async (params) => {
+const getTypesMonument = async (params) => {
     if (Array.isArray(params.ids)) {
-        const result = await selectCollections(params.ids)
+        const result = await selectTypeMonument(params.ids)
         return {
             result: 'successful',
             objects: result
@@ -42,4 +42,4 @@ const getCollections = async (params) => {
     }
 }
 
-module.exports = getCollections
+module.exports = getTypesMonument

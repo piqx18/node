@@ -18,7 +18,7 @@ const insertCollection = async(params) => {
     const query = `INSERT INTO collections(title, year, monument, expedition, chief) VALUES('${params.title}', '${params.year}', '${params.monument}', '${params.expedition}',
     '${params.chief}')`
     const result = await requestToDataBase(query).then(result=> {
-        console.log(`Obtained record - ${JSON.stringify(result)}`)
+        console.log(`Created record - ${JSON.stringify(result)}`)
         return result.insertId
     }).catch(error => {
         console.log(error)
