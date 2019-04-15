@@ -5,6 +5,7 @@ const authorization = require('./routing/Auth/auth')
 const answerAccessDenied = require('./response')
 const createUser = require('./routing/User/create-user')
 const deleteUser = require('./routing/User/delete-user')
+const getUsers = require('./routing/User/get-users')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -66,5 +67,27 @@ app.post('/api/v1/user/deleteuser', async(request, response) => {
         response.send({ error: ex.toString()})
     }
 })
+
+app.post('/api/v1/user/getusers', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getUsers(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+            // response.send(result)
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
 
 app.listen(port);

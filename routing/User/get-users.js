@@ -1,8 +1,14 @@
-import requestToDataBase from '../../client-mysql/client-mysql';
+const requestToDataBase = require('../../client-mysql/client-mysql')
 
 const getUser = async (ids) => {
     console.log(`Try to get user info with ids - ${ids}`)
-    const query = `SELECT * FROM USERS WHERE user_id in (${ids})`
+    let query = ''
+    if (ids.length > 0) {
+        query = `SELECT * FROM USERS WHERE user_id in (${ids})`
+    } 
+    else {
+        query = `SELECT * FROM USERS`
+    }
     const result = await requestToDataBase(query)
     .then(result => {
             console.log(`Records with ids ${ids} obtainded - ${JSON.stringify(result)}`)
@@ -18,7 +24,13 @@ const getUser = async (ids) => {
 
 const getAccounts = async(ids) => {
     console.log(`Try to get user personal data with ids - ${ids}`)
-    const query = `SELECT * FROM accounts WHERE user_id in (${ids})`
+    let query = ''
+    if (ids.length > 0){
+        query = `SELECT * FROM accounts WHERE user_id in (${ids})`
+    }
+    else {
+        query = 'SELECT * FROM accounts'
+    }
     const result = await requestToDataBase(query)
     .then(
         result => {
@@ -35,7 +47,13 @@ const getAccounts = async(ids) => {
 
 const getRights = async(ids) => {
     console.log(`Try to get user rights data with ids - ${ids}`)
-    const query = `SELECT * FROM rights WHERE user_id in (${ids})`
+    query = ''
+    if (ids.length > 0) {
+        query = `SELECT * FROM rights WHERE user_id in (${ids})`    
+    }
+    else {
+        query = 'SELECT * FROM rights'
+    }
     const result = await requestToDataBase(query)
     .then(
         result => {
@@ -62,13 +80,18 @@ const getUsers = async (params) => {
         const userData = await getUser(params.ids)
         const accountsData = await getAccounts(params.ids)
         const rightsData = await getRights(params.ids)
-        // todo сделать формирование массива  [{
-        //  userData: {},
-        //  accountsData: {},
-        //  rightsData: {}
-        // }]
-        // 
-        // 
+        let users = []
+        const lenghtUsers = userData.length
+        for (let i=0; i< lenghtUsers; i++) {
+            users.push(
+                {
+                    userData,
+                    accountsData,
+                    rightsData
+                }
+            )
+        }
+        return users
     }
     else {
         return invalidRequest()
