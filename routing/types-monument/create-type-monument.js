@@ -1,9 +1,9 @@
 const requestToDataBase = require('../../client-mysql/client-mysql')
 
 
-const checkTypeMonument = async(params) => {
-    console.log(`Try to get types monument with type ${params.type}`)
-    const query = `SELECT * FROM types_of_monument WHERE type = '${params.type}'`
+const checkTypeMonument = async(type) => {
+    console.log(`Try to get types monument with type ${type}`)
+    const query = `SELECT * FROM types_of_monument WHERE type = '${type}'`
     const result = await requestToDataBase(query).then(result=> {
         console.log(`Obtained record - ${JSON.stringify(result)}`)
         return result
@@ -27,19 +27,19 @@ const insertTypeMonument = async(params) => {
     return result
 }
 
-const typeMonumentIsExist = (params) => {
+const typeMonumentIsExist = (type) => {
     return {
         result: 'error',
-        message: `type monument with type - ${params.type} exist`
+        message: `type monument with type - ${type} exist`
     }
 }
 
 
 const createTypeMonument = async(params) => {
-    const _checkTypeMonument = await checkTypeMonument(params)
+    const _checkTypeMonument = await checkTypeMonument(params.type)
 
     if (_checkTypeMonument.length > 0) {
-        return typeMonumentIsExist(params)
+        return typeMonumentIsExist(params.type)
     }
     else {
         const typeMonumentId = await insertTypeMonument(params)

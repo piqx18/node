@@ -1,8 +1,8 @@
 const requestToDataBase = require('../../client-mysql/client-mysql')
 
-const checkCollection = async(params) => {
-    console.log(`Try to get collections with title ${params.title}`)
-    const query = `SELECT * FROM collections WHERE title = '${params.title}'`
+const checkCollection = async(title) => {
+    console.log(`Try to get collections with title ${title}`)
+    const query = `SELECT * FROM collections WHERE title = '${title}'`
     const result = await requestToDataBase(query).then(result=> {
         console.log(`Obtained record - ${JSON.stringify(result)}`)
         return result
@@ -27,17 +27,17 @@ const insertCollection = async(params) => {
     return result
 }
 
-const collectionIsExist = (params) => {
+const collectionIsExist = (title) => {
     return {
         result: 'error',
-        message: `collections with title - ${params.title} exist`
+        message: `collections with title - ${title} exist`
     }
 }
 
 const createCollection = async(params) => {
-    const _checkCollection = await checkCollection(params)
+    const _checkCollection = await checkCollection(params.title)
     if (_checkCollection.length > 0) {
-        return collectionIsExist(params)
+        return collectionIsExist(params.title)
     }
     else if(_checkCollection.length === 0) {
         const collectionId = await insertCollection(params)
@@ -49,4 +49,7 @@ const createCollection = async(params) => {
     }
 }
 
-module.exports = createCollection
+module.exports = {
+    createCollection,
+    checkCollection
+}

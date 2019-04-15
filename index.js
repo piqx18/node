@@ -6,12 +6,14 @@ const answerAccessDenied = require('./response')
 const createUser = require('./routing/User/create-user')
 const deleteUser = require('./routing/User/delete-user')
 const getUsers = require('./routing/User/get-users')
-const createCollection = require('./routing/collections/create-collections')
+const createCollection = require('./routing/collections/create-collections').createCollection
 const deleteCollections = require('./routing/collections/delete-collections')
 const getCollections = require('./routing/collections/get-collections')
 const createTypeMonument = require('./routing/types-monument/create-type-monument').createTypeMonument
 const getTypesMonuments = require('./routing/types-monument/get-type-monument')
 const deleteTypesMonuments = require('./routing/types-monument/delete-monument')
+const createRestoreItem = require('./routing/restore-Items/create-restore-items')
+
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -213,7 +215,25 @@ app.post('/api/v1/typesmonument/deletetypemonument', async(request, response) =>
     }
 })
 
-
+app.post('/api/v1/restore-item/create', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createRestoreItem(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
 
 
 app.listen(port);
