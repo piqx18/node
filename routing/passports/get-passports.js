@@ -28,7 +28,7 @@ const transformItems = (passports, restoreItems) => {
         let currentRestoreItem = restoreItems.filter(item => item.id === passports[i].item_id)
         let transformItem = {
             id: passports[i].id,
-            restoreItem: currentRestoreItem,
+            restoreItem: currentRestoreItem[0],
             reasonForRest: passports[i].reason_for_rest,
             size: passports[i].size,
             placeOfSave: passports[i].place_of_save,

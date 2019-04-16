@@ -32,8 +32,8 @@ const transformItems = (restoreItems, collections, typeMonuments) => {
         let transformItem = {
             id: restoreItems[i].id,
             invNumber: restoreItems[i].inv_numb,
-            typeMonument: currentTypeMonument,
-            collection: currentCollections,
+            typeMonument: currentTypeMonument[0],
+            collection: currentCollections[0],
             title: restoreItems[i].title,
             technique: restoreItems[i].technique,
             author: restoreItems[i].author,
