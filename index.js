@@ -19,6 +19,7 @@ const createPassport = require('./routing/passports/create-passport')
 const getPassports = require('./routing/passports/get-passports')
 const deletePassports = require('./routing/passports/delete-passports')
 const createLabResearch = require('./routing/lab-research/create-lab-research')
+const getLabResearch = require('./routing/lab-research/get-lab-research')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -349,6 +350,26 @@ app.post('/api/v1/lab-research/create', async(request, response) => {
         }
         else {
             await createLabResearch(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/lab-research/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getLabResearch(params).then(result => {
                 console.log(JSON.stringify(result))
                 response.send(result)
             });

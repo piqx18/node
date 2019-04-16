@@ -1,7 +1,7 @@
 const requestToDataBase = require('../../client-mysql/client-mysql')
 const getRestoreItem = require('../restore-Items/get-restore-item')
 
-const selectPasspots = async(ids) => {
+const selectPassports = async(ids) => {
     console.log(`Try to get passports info with ids - ${ids}`)
     let query = ''
     if (ids.length > 0) {
@@ -51,7 +51,7 @@ const transformItems = (passports, restoreItems) => {
 }
 
 const getPassports = async(params) => {
-    const obtainedPassports = await selectPasspots(params.ids)
+    const obtainedPassports = await selectPassports(params.ids)
     if(obtainedPassports.length === 0) {
         return {
             resutl: 'error',
