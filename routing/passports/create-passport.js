@@ -17,7 +17,6 @@ const checkRestoreItem = async(restoreItemId) => {
 }
 
 const insertPassport = async(params) => {
-    console.log(`Try to create passport with params - ${JSON.stringify(params)}`)
     const query = `INSERT INTO passport(item_id, reason_for_rest, size, place_of_save, date_of_transfer, spec_conditions, 
         base_history, status_visual, status_general, events_result, concludion, recomends, transfered, work_head, performers, created) VALUES 
         ('${params.itemId}','${params.reasonForRest}','${params.size}','${params.placeOfSave}','${params.dateOfTransfer}','${params.specConditions}', '${params.baseHistory}',
@@ -44,6 +43,7 @@ const checkParametersPassport = (params) => {
 }
 
 const createPassport = async(params) => {
+    console.log(`Try to create passport with params - ${JSON.stringify(params)}`)
     const errors = checkParametersPassport(params)
     if(errors.length > 0) {
         return {

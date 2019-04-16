@@ -40,7 +40,6 @@ const checkRestoreItem = async(params) => {
 }
 
 const insertRestoreItem = async(params) => {
-    console.log(`Try to create restore item with params - ${JSON.stringify(params)}`)
     const query = `INSERT INTO items(inv_numb, type_id, collection_id, title, technique, author, size, time_of_create) 
     VALUES('${params.invNumber}', '${params.typeMonumentId}', '${params.collectionId}', '${params.title}', '${params.technique}', 
     '${params.author}','${params.size}', '${params.timeOfCreate}')`
@@ -61,36 +60,19 @@ const restoreItemIsExist = (title) => {
     }
 }
 
+const requiredParameters = ['invNumber', 'typeMonumentId', 'collectionId', 'title', 'technique', 'author', 'size', 'timeOfCreate']
 const checkParameters = (params) => {
     let errors = []
-    if (!params.invNumber) {
-        errors.push('params invNumber is required')
-    }
-    if (!params.typeMonumentId) {
-        errors.push('params typeMonumentId is required')
-    }
-    if (!params.collectionId) {
-        errors.push('params collectionId is required')
-    }
-    if (!params.title) {
-        errors.push('params title is required')
-    }
-    if (!params.technique) {
-        errors.push('params technique is required')
-    }
-    if (!params.author) {
-        errors.push('params author is required')
-    }
-    if (!params.size) {
-        errors.push('params size is required')
-    }
-    if (!params.timeOfCreate) {
-        errors.push('params timeOfCreate is required')
+    for (let param of reqiredParameters) {
+        if(params[param] === undefined) {
+            errors.push(`Params ${param} is required`)
+        }
     }
     return errors
 }
 
 const createRestoreItem = async (params) => {
+    console.log(`Try to create restore item with params - ${JSON.stringify(params)}`)
     const errors = checkParameters(params)
     if (errors.length > 0) {
         return {

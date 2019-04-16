@@ -50,6 +50,12 @@ const transformItems = (restoreItems, collections, typeMonuments) => {
 
 const getRestoreItems = async(params) => {
     const obtaindedItems = await selectRestoreItems(params)
+    if(obtaindedItems.length === 0) {
+        return {
+            resutl: 'error',
+            message: `restoreItems with ids - ${params.ids} not exist`
+        }
+    }
     const collectionsIds = obtaindedItems.map(items => items.collection_id)
     const typeMonumentIds = obtaindedItems.map(items => items.type_id)
     const collections = await getCollections({ids:collectionsIds})

@@ -14,7 +14,6 @@ const checkCollection = async(title) => {
 }
 
 const insertCollection = async(params) => {
-    console.log(`Try to create collections with params - ${JSON.stringify(params)}`)
     const query = `INSERT INTO collections(title, year, monument, expedition, chief) VALUES('${params.title}', '${params.year}', '${params.monument}', '${params.expedition}',
     '${params.chief}')`
     const result = await requestToDataBase(query).then(result=> {
@@ -35,6 +34,7 @@ const collectionIsExist = (title) => {
 }
 
 const createCollection = async(params) => {
+    console.log(`Try to create collections with params - ${JSON.stringify(params)}`)
     const _checkCollection = await checkCollection(params.title)
     if (_checkCollection.length > 0) {
         return collectionIsExist(params.title)

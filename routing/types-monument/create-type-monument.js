@@ -15,7 +15,6 @@ const checkTypeMonument = async(type) => {
 }
 
 const insertTypeMonument = async(params) => {
-    console.log(`Try to create typeMonument with data - ${JSON.stringify(params)}`)
     const query = `INSERT INTO types_of_monument(type) VALUES ('${params.type}')`
     const result = await requestToDataBase(query).then(result=> {
         console.log(`Obtained record - ${JSON.stringify(result)}`)
@@ -36,6 +35,7 @@ const typeMonumentIsExist = (type) => {
 
 
 const createTypeMonument = async(params) => {
+    console.log(`Try to create typeMonument with data - ${JSON.stringify(params)}`)
     const _checkTypeMonument = await checkTypeMonument(params.type)
 
     if (_checkTypeMonument.length > 0) {

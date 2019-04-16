@@ -52,6 +52,12 @@ const transformItems = (passports, restoreItems) => {
 
 const getPassports = async(params) => {
     const obtainedPassports = await selectPasspots(params.ids)
+    if(obtainedPassports.length === 0) {
+        return {
+            resutl: 'error',
+            message: `passports with ids - ${params.ids} not exist`
+        }
+    }
     const restoreItemsIds = obtainedPassports.map(items => items.item_id)
     const restoreItems = await getRestoreItem({ids: restoreItemsIds})
     const resultArray = transformItems(obtainedPassports, restoreItems.objects)
