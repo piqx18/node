@@ -30,6 +30,7 @@ const transformItems = (restoreItems, collections, typeMonuments) => {
         let currentCollections = collections.objects.filter(element => element.id === restoreItems[i].collection_id)
         let currentTypeMonument = typeMonuments.objects.filter(element => element.id === restoreItems[i].type_id)
         let transformItem = {
+            id: restoreItems[i].id,
             invNumber: restoreItems[i].inv_numb,
             typeMonument: currentTypeMonument,
             collection: currentCollections,
