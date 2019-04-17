@@ -1,4 +1,5 @@
 const requestToDataBase = require('../../client-mysql/client-mysql')
+const checkParameters = require('../../check-parameters')
 
 const reqiredParameters = ['itemId', 'reasonForRest', 'size', 'placeOfSave', 'dateOfTransfer', 'specConditions', 'statusVisual',  'statusGeneral',
 'eventsResult', 'concludion', 'transfered', 'director', 'workHead', 'performers', 'created']
@@ -23,7 +24,7 @@ const insertPassport = async(params) => {
         '${params.statusVisual}', '${params.statusGeneral}', '${params.eventsResult}', '${params.concludion}', '${params.transfered}', '${params.director}'
         , '${params.workHead}', '${params.performers}', '${params.created}')`
     const result = await requestToDataBase(query).then(result=> {
-        console.log(`Obtained record - ${JSON.stringify(result)}`)
+        console.log(`Passport created with params - ${JSON.stringify(result)}`)
         return result.insertId
     }).catch(error => {
         console.log(error)
@@ -32,19 +33,9 @@ const insertPassport = async(params) => {
     return result
 }
 
-const checkParametersPassport = (params) => {
-    let errors = []
-    for (let param of reqiredParameters) {
-        if(params[param] === undefined) {
-            errors.push(`Params ${param} is required`)
-        }
-    }
-    return errors
-}
-
 const createPassport = async(params) => {
     console.log(`Try to create passport with params - ${JSON.stringify(params)}`)
-    const errors = checkParametersPassport(params)
+    const errors = checkParameters(params, reqiredParameters)
     if(errors.length > 0) {
         return {
             result: 'error',

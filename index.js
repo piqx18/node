@@ -21,6 +21,9 @@ const deletePassports = require('./routing/passports/delete-passports')
 const createLabResearch = require('./routing/lab-research/create-lab-research')
 const getLabResearch = require('./routing/lab-research/get-lab-research')
 const deleteLabResearch = require('./routing/lab-research/delete-lab-research')
+const createMaterials = require('./routing/materials/create-material')
+const getMaterials = require('./routing/materials/get-materials')
+const deleteMaterials = require('./routing/materials/delete-materials')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -391,6 +394,66 @@ app.post('/api/v1/lab-research/delete', async(request, response) => {
         }
         else {
             await deleteLabResearch(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/materials/create', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createMaterials(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/materials/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getMaterials(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/materials/delete', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await deleteMaterials(params).then(result => {
                 console.log(JSON.stringify(result))
                 response.send(result)
             });
