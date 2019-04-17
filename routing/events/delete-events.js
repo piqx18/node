@@ -3,9 +3,8 @@ const checkParameters = require('../../check-parameters')
 
 const requiredParameters = ['ids']
 
-const deleteMaterials = async(params) => {
-    console.log(`Try to delete materials with ids - ${params.ids}`)
-    const query = `DELETE FROM material WHERE id in (${params.ids})`
+const deleteEvents = async(params) => {
+    console.log(`Try to purge events with ids - ${params.ids}`)
     const errors = checkParameters(params, requiredParameters)
     if (errors.length > 0) {
         return {
@@ -13,6 +12,7 @@ const deleteMaterials = async(params) => {
             message: errors
         }
     }
+    const query = `DELETE FROM events WHERE id in (${params.ids})`
     await requestToDataBase(query).then(result => {
         console.log(`Records with id ${params.ids} purged - ${JSON.stringify(result)}`)
     }).catch(
@@ -22,9 +22,9 @@ const deleteMaterials = async(params) => {
     })
     return {
         result: 'successful',
-        message: 'materials purged',
+        message: 'events purged',
         ids: params.ids
     }
 }
 
-module.exports = deleteMaterials
+module.exports = deleteEvents

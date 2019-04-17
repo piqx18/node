@@ -6,7 +6,7 @@ const requiredParameters = ['name']
 const checkMaterial = async(params) => {
     const query = `SELECT * FROM material WHERE name = '${params.name}'`
     const result = await requestToDataBase(query).then(result=> {
-        console.log(`Material created with params - ${JSON.stringify(result)}`)
+        console.log(`Material obtained with params - ${JSON.stringify(result)}`)
         return result
     }).catch(error => {
         console.log(error)

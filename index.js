@@ -24,6 +24,9 @@ const deleteLabResearch = require('./routing/lab-research/delete-lab-research')
 const createMaterials = require('./routing/materials/create-material')
 const getMaterials = require('./routing/materials/get-materials')
 const deleteMaterials = require('./routing/materials/delete-materials')
+const createEvent = require('./routing/events/create-events')
+const getEvents = require('./routing/events/get-events')
+const deleteEvents = require('./routing/events/delete-events')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -454,6 +457,66 @@ app.post('/api/v1/materials/delete', async(request, response) => {
         }
         else {
             await deleteMaterials(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/events/create', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createEvent(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/events/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getEvents(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/events/delete', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await deleteEvents(params).then(result => {
                 console.log(JSON.stringify(result))
                 response.send(result)
             });

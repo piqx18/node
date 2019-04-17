@@ -20,7 +20,7 @@ const selectMaterials = async(params) => {
         console.error(error.message)
         throw error
     })
-return result
+    return result
 }
 
 
@@ -35,7 +35,7 @@ const getMeterails = async(params) => {
     const obtainedMaterials = await selectMaterials(params)
     if(obtainedMaterials.length === 0) {
         return {
-            resutl: 'error',
+            result: 'error',
             message: `materials with ids - ${params.ids} not exist`
         }
     }
