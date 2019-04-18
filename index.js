@@ -27,6 +27,9 @@ const deleteMaterials = require('./routing/materials/delete-materials')
 const createEvent = require('./routing/events/create-events')
 const getEvents = require('./routing/events/get-events')
 const deleteEvents = require('./routing/events/delete-events')
+const createCompositions = require('./routing/compositions/create-compositions')
+const getCompositions = require('./routing/compositions/get-compostions')
+const deleteCompositions = require('./routing/compositions/delete-compositions')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -517,6 +520,66 @@ app.post('/api/v1/events/delete', async(request, response) => {
         }
         else {
             await deleteEvents(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/compositions/create', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createCompositions(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/compositions/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getCompositions(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/compositions/delete', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await deleteCompositions(params).then(result => {
                 console.log(JSON.stringify(result))
                 response.send(result)
             });

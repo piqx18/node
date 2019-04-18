@@ -49,7 +49,7 @@ const getEvents = async(params) => {
     const obtainedEvents = await selectEvents(params)
     if(obtainedEvents.length === 0) {
         return {
-            resutl: 'error',
+            result: 'error',
             message: `events with ids - ${params.ids} not exist`
         }
     }
