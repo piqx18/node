@@ -9,12 +9,17 @@ let queryTakeRights = (userId) => {
      return 'select * from rights where user_id=' + mysql.escape(userId)
 }
 
-let answerSuccesfull = (user, rights) => {
+let queryTakeAccounts = (userId) => {
+    return 'select * from accounts where user_id=' + mysql.escape(userId)
+}
+
+let answerSuccesfull = (user, rights, account) => {
     return {
         result: `successfull`,
         dataAuth: user[0], 
         token: 'root',
-        dataAccess: rights[0]
+        dataAccess: rights[0],
+        dataAccount: account[0]
         // todo надо ли править 1 -> true
     }
 }
@@ -43,7 +48,9 @@ let authoriazation = async(data) => {
     if (user.length > 0 && user[0].password === password) {
         query = queryTakeRights(user[0].user_id)
         let rights = await requestToDataBase(query);
-        return answerSuccesfull(user, rights) 
+        query = queryTakeAccounts(user[0].user_id)
+        let account = await requestToDataBase(query)
+        return answerSuccesfull(user, rights, account) 
     }
     else if(user.length === 0) {
         return answerNotFound(user)

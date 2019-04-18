@@ -3,7 +3,7 @@ const mysql = require('mysql')
 
 const checkUser = async(dataAuth) => {
     console.log(`Try to get user with data - ${JSON.stringify(dataAuth)}`);
-    let query = 'Select * from users where login=' + mysql.escape(dataAuth.login);
+    let query = 'Select * from users where login = ' + mysql.escape(dataAuth.login);
     const result = await requestToDataBase(query).then( result=> {
         console.log(`Obtained record - ${JSON.stringify(result)}`)
         return result
