@@ -30,6 +30,9 @@ const deleteEvents = require('./routing/events/delete-events')
 const createCompositions = require('./routing/compositions/create-compositions')
 const getCompositions = require('./routing/compositions/get-compostions')
 const deleteCompositions = require('./routing/compositions/delete-compositions')
+const createMaterialInPassport = require('./routing/material-in-passport/create-material-in-passport')
+const getMaterialsInPassports = require('./routing/material-in-passport/get-materials-in-passports')
+const deleteMaterialsInPassports = require('./routing/material-in-passport/delete-materials-in-passport')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -590,5 +593,66 @@ app.post('/api/v1/compositions/delete', async(request, response) => {
         response.send({ error: ex.toString()})
     }
 })
+
+app.post('/api/v1/materials-passport/create', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createMaterialInPassport(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/materials-passport/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getMaterialsInPassports(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/materials-passport/delete', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await deleteMaterialsInPassports(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
 
 app.listen(port);
