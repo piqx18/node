@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require('body-parser')
-const app = express();
 const authorization = require('./routing/Auth/auth')
 const answerAccessDenied = require('./response')
 const createUser = require('./routing/User/create-user')
@@ -37,6 +36,7 @@ const deleteMaterialsInPassports = require('./routing/material-in-passport/delet
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
 
+const app = express();
 app.use(bodyParser.json());
 
 app.post('/api/v1/user/authorization', async(request, response) => {

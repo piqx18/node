@@ -13,7 +13,7 @@ let answerSuccesfull = (user, rights) => {
     return {
         result: `successfull`,
         dataAuth: user[0], 
-        ... { token: 'root' },
+        token: 'root',
         dataAccess: rights[0]
         // todo надо ли править 1 -> true
     }
