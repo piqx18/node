@@ -5,18 +5,6 @@ const getPassport = require('../passports/get-passports')
 
 const requiredParameters = ['passportId', 'materialId', 'note']
 
-const checkMaterialInPassport = async(params) => {
-    const query = `SELECT * FROM mat_in_pas WHERE note = '${params.note}'`
-    const result = await requestToDataBase(query).then(result=> {
-        console.log(`Material in passport obtained with params - ${JSON.stringify(result)}`)
-        return result
-    }).catch(error => {
-        console.log(error)
-        throw error
-    })
-    return result
-}
-
 const insertMaterialInPassport = async(params) => {
     const query = `INSERT INTO mat_in_pas(passport_id, material_id, note) VALUES('${params.passportId}', '${params.materialId}', '${params.note}')`
     const result = await requestToDataBase(query).then(result=> {
@@ -49,13 +37,6 @@ const createMaterialInPassport = async(params) => {
         return {
             result: 'error',
             message: passport.message
-        }
-    }
-    const checkRecord = await checkMaterialInPassport(params)
-    if (checkRecord.length > 0) {
-        return {
-            result: 'error',
-            message: 'Material in passport exist'
         }
     }
     const id = await insertMaterialInPassport(params)
