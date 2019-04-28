@@ -8,7 +8,7 @@ const selectEvents = async(params) => {
     console.log(`Try to get events with ids - ${params.ids}`)
     let query = ''
     if (params.ids.length > 0) {
-        query = `SELECT * FROM events WHERE id in (${params.ids})`
+        query = `SELECT * FROM events WHERE material_id in (${params.ids})`
     } 
     else {
         query = `SELECT * FROM events`
@@ -31,7 +31,7 @@ const transformData = (events, materials) => {
         let transformItem = {
             id: events[i].id,
             material: currentMaterial[0],
-            event: events[i].event
+            _event: events[i].event
         }
         resultArray.push(transformItem)
     }
@@ -50,7 +50,7 @@ const getEvents = async(params) => {
     if(obtainedEvents.length === 0) {
         return {
             result: 'error',
-            message: `events with ids - ${params.ids} not exist`
+            message: `events with material_ids - ${params.ids} not exist`
         }
     }
     const materialsIds = obtainedEvents.map(element => element.material_id)

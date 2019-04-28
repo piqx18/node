@@ -32,6 +32,9 @@ const deleteCompositions = require('./routing/compositions/delete-compositions')
 const createMaterialInPassport = require('./routing/material-in-passport/create-material-in-passport')
 const getMaterialsInPassports = require('./routing/material-in-passport/get-materials-in-passports')
 const deleteMaterialsInPassports = require('./routing/material-in-passport/delete-materials-in-passport')
+const createEventInPassport = require('./routing/events-in-passport/create-event-in-passport')
+const getEventInPassport = require('./routing/events-in-passport/get-event-in-passport')
+const deleteEventInPassport = require('./routing/events-in-passport/delete-event-in-passport')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -654,5 +657,65 @@ app.post('/api/v1/materials-passport/delete', async(request, response) => {
     }
 })
 
+
+app.post('/api/v1/events-passport/create', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createEventInPassport(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/events-passport/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getEventInPassport(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/events-passport/delete', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await deleteEventInPassport(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
 
 app.listen(port);

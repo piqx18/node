@@ -43,7 +43,11 @@ const transformItems = (passports, restoreItems) => {
             transfered: passports[i].transfered,
             workHead: passports[i].work_head,
             performers: passports[i].performers,
-            created: passports[i].created
+            created: passports[i].created,
+            act: passports[i].act,
+            program: passports[i].program,
+            protocol: passports[i].protocol,
+            endDate: passports[i].end_date
         }
         resultArray.push(transformItem)
     }

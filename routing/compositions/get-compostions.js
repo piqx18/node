@@ -8,7 +8,7 @@ const selectCompositions = async(params) => {
     console.log(`Try to get compositions with ids - ${params.ids}`)
     let query = ''
     if (params.ids.length > 0) {
-        query = `SELECT * FROM compositions WHERE id in (${params.ids})`
+        query = `SELECT * FROM compositions WHERE event_id in (${params.ids})`
     } 
     else {
         query = `SELECT * FROM compositions`
@@ -30,7 +30,7 @@ const transformData = (compositions, events) => {
         let currentEvent = events.filter(element => element.id === compositions[i].event_id)
         let transform = {
             id: compositions[i].id,
-            event: currentEvent[0],
+            _event: currentEvent[0],
             composition: compositions[0].composition
         }
         resultArray.push(transform)
@@ -54,7 +54,7 @@ const getCompositions = async(params) => {
         }
     }
     const eventsIds = obtainedCompositions.map(element => element.event_id)
-    const events = await getEvents({ids: eventsIds})
+    const events = await getEvents({ids: []})
     const resultArray = transformData(obtainedCompositions, events.objects)
     return {
         result: 'successfull',

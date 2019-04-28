@@ -23,7 +23,8 @@ const transformData = (materialInPassports, materials) => {
         let currentMaterial = materials.filter(element => element.id === materialInPassports[i].material_id)
         let data = {
             note: materialInPassports[i].note,
-            material: currentMaterial[0]
+            material: currentMaterial[0],
+            priority: materialInPassports[i].priority
         }
         resultArray.push(data)
     }
