@@ -27,8 +27,8 @@ const checkCollection = async(params) => {
 }
 
 const checkRestoreItem = async(params) => {
-    console.log(`Try to get restore item with title - ${params.title}`)
-    const query = `SELECT * FROM items WHERE title = '${params.title}'`
+    console.log(`Try to get restore item with invNumber - ${params.invNumber}`)
+    const query = `SELECT * FROM items WHERE inv_numb = '${params.invNumber}'`
     const result = await requestToDataBase(query).then(result=> {
         console.log(`Obtained record - ${JSON.stringify(result)}`)
         return result
@@ -63,7 +63,7 @@ const restoreItemIsExist = (title) => {
 const requiredParameters = ['invNumber', 'typeMonumentId', 'collectionId', 'title', 'technique', 'author', 'size', 'timeOfCreate']
 const checkParameters = (params) => {
     let errors = []
-    for (let param of reqiredParameters) {
+    for (let param of requiredParameters) {
         if(params[param] === undefined) {
             errors.push(`Params ${param} is required`)
         }

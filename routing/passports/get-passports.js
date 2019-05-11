@@ -29,15 +29,15 @@ const transformItems = (passports, restoreItems) => {
         let transformItem = {
             id: passports[i].id,
             restoreItem: currentRestoreItem[0],
-            reasonForRest: passports[i].reason_for_rest,
+            reasonForRest: passports[i].reasons_for_rest,
             size: passports[i].size,
             placeOfSave: passports[i].place_of_save,
             dateOfTransfer: passports[i].date_of_transfer,
             specConditions: passports[i].spec_conditions,
-            baseHistory: passports[i].specHistory,
+            baseHistory: passports[i].base_history,
             statusVisual: passports[i].status_visual,
             statusGeneral: passports[i].status_general,
-            eventsResult: passports[i].events_results,
+            eventsResult: passports[i].events_result,
             concludion: passports[i].concludion,
             recomends: passports[i].recomends,
             transfered: passports[i].transfered,
@@ -47,7 +47,8 @@ const transformItems = (passports, restoreItems) => {
             act: passports[i].act,
             program: passports[i].program,
             protocol: passports[i].protocol,
-            endDate: passports[i].end_date
+            endDate: passports[i].end_date,
+            director: passports[i].director
         }
         resultArray.push(transformItem)
     }

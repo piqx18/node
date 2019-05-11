@@ -31,7 +31,7 @@ const transformData = (compositions, events) => {
         let transform = {
             id: compositions[i].id,
             _event: currentEvent[0],
-            composition: compositions[0].composition
+            composition: compositions[i].composition
         }
         resultArray.push(transform)
     }

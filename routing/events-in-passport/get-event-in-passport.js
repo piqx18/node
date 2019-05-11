@@ -22,6 +22,8 @@ const transformData = (EventInPassports, materials) => {
     for (let i = 0; i < EventInPassports.length; i++) {
         let currentComposition = materials.filter(element => element.id === EventInPassports[i].composition_id)
         let data = {
+            id: EventInPassports[i].id,
+            passportId: EventInPassports[i].passport_id,
             dateFrom: EventInPassports[i].date_from,
             dateTo: EventInPassports[i].date_to,
             composition: currentComposition[0],
