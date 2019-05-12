@@ -35,6 +35,8 @@ const deleteMaterialsInPassports = require('./routing/material-in-passport/delet
 const createEventInPassport = require('./routing/events-in-passport/create-event-in-passport')
 const getEventInPassport = require('./routing/events-in-passport/get-event-in-passport')
 const deleteEventInPassport = require('./routing/events-in-passport/delete-event-in-passport')
+const updateRestoreItem  = require('./routing/restore-Items/update-restore-item')
+const updatePassport = require('./routing/passports/update-passport')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -297,6 +299,26 @@ app.post('/api/v1/restore-item/delete', async(request, response) => {
     }
 })
 
+app.post('/api/v1/restore-item/update', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await updateRestoreItem(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
 app.post('/api/v1/passports/create', async(request, response) => {
     try {
         let params = request.body;
@@ -346,6 +368,26 @@ app.post('/api/v1/passports/delete', async(request, response) => {
         }
         else {
             await deletePassports(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/passports/update', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await updatePassport(params).then(result => {
                 console.log(JSON.stringify(result))
                 response.send(result)
             });
