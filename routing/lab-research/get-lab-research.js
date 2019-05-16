@@ -5,7 +5,7 @@ const selectLabResearch = async(ids) => {
     console.log(`Try to get lab research info with ids - ${ids}`)
     let query = ''
     if (ids.length > 0) {
-        query = `SELECT * FROM lab_research WHERE id in (${ids})`
+        query = `SELECT * FROM lab_research WHERE passport_id in (${ids})`
     } 
     else {
         query = `SELECT * FROM lab_research`
@@ -28,7 +28,7 @@ const transformItems = (labResearch, passports) => {
         let currentPassport = passports.filter(item => item.id === labResearch[i].passport_id)
         let transformItem = {
             id: labResearch[i].id,
-            passport: currentPassport,
+            passport: currentPassport[0],
             purpose: labResearch[i].purpose,
             results: labResearch[i].results,
             placeOfSave: labResearch[i].place_of_save,
@@ -43,7 +43,7 @@ const getLabResearch = async(params) => {
     const obtainedLabResearch = await selectLabResearch(params.ids)
     if(obtainedLabResearch.length === 0) {
         return {
-            resutl: 'error',
+            result: 'error',
             message: `labResearch with ids - ${params.ids} not exist`
         }
     }

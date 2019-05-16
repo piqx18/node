@@ -1,5 +1,6 @@
 const requestToDataBase = require('../../client-mysql/client-mysql')
 const getRestoreItem = require('../restore-Items/get-restore-item')
+const getPlaceOFSave = require('../place-of-save/get-place-of-save')
 
 const selectPassports = async(ids) => {
     console.log(`Try to get passports info with ids - ${ids}`)
@@ -22,16 +23,17 @@ const selectPassports = async(ids) => {
     return result
 }
 
-const transformItems = (passports, restoreItems) => {
+const transformItems = (passports, restoreItems, placeOfSaves) => {
     let resultArray = []
     for (let i = 0; i < passports.length; i++) {
         let currentRestoreItem = restoreItems.filter(item => item.id === passports[i].item_id)
+        let currentPlaceOfSave = placeOfSaves.filter(item => item.id === passports[i].place_of_save)
         let transformItem = {
             id: passports[i].id,
             restoreItem: currentRestoreItem[0],
             reasonForRest: passports[i].reasons_for_rest,
             size: passports[i].size,
-            placeOfSave: passports[i].place_of_save,
+            placeOfSave: currentPlaceOfSave[0],
             dateOfTransfer: passports[i].date_of_transfer,
             specConditions: passports[i].spec_conditions,
             baseHistory: passports[i].base_history,
@@ -64,8 +66,10 @@ const getPassports = async(params) => {
         }
     }
     const restoreItemsIds = obtainedPassports.map(items => items.item_id)
+    const placeOfSaveIds = obtainedPassports.map(item => item.place_of_save)
     const restoreItems = await getRestoreItem({ids: restoreItemsIds})
-    const resultArray = transformItems(obtainedPassports, restoreItems.objects)
+    const getPlaceOfSave = await getPlaceOFSave({ids: placeOfSaveIds})
+    const resultArray = transformItems(obtainedPassports, restoreItems.objects, getPlaceOfSave.objects)
     return {
         result: 'successfull',
         objects: resultArray

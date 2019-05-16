@@ -37,6 +37,13 @@ const getEventInPassport = require('./routing/events-in-passport/get-event-in-pa
 const deleteEventInPassport = require('./routing/events-in-passport/delete-event-in-passport')
 const updateRestoreItem  = require('./routing/restore-Items/update-restore-item')
 const updatePassport = require('./routing/passports/update-passport')
+const createImagesInPassport = require('./routing/images/create-images')
+const getImages = require('./routing/images/get-images')
+const deleteImages = require('./routing/images/delete-images')
+const formidable = require('express-formidable');
+const createPlaceOfSave = require('./routing/place-of-save/create-place-of-save')
+const getPlaceOfSave = require('./routing/place-of-save/get-place-of-save')
+const deletePlaceOfSave = require('./routing/place-of-save/delete-place-of-save')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -519,6 +526,66 @@ app.post('/api/v1/materials/delete', async(request, response) => {
     }
 })
 
+app.post('/api/v1/placeofsave/create', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createPlaceOfSave(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/placeofsave/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getPlaceOfSave(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/placeofsave/delete', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await deletePlaceOfSave(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
 app.post('/api/v1/events/create', async(request, response) => {
     try {
         let params = request.body;
@@ -760,4 +827,82 @@ app.post('/api/v1/events-passport/delete', async(request, response) => {
     }
 })
 
+app.use(formidable({
+    uploadDir: './uploads',
+    keepExtensions: true
+}))
+app.post('/api/v1/images/create', async(request, response) => {
+    try {
+        const params = {
+            fileName: request.files.uploadfile.path.split('\\')[1],
+            passportId: request.query.passportId,
+            comment: request.query.comment,
+            workTime: request.query.workTime,
+            date: request.query.date
+        }
+            await createImagesInPassport(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.get('/api/v1/getImage', async(request, response) => {
+    try {
+        let fs = require('fs');
+        let imageName = './uploads/' + request.query.imageName;
+        const file = fs.readFileSync(imageName)
+        response.header({'ContentType': 'image/png'})
+        response.send(file)
+    }
+    catch(ex) {
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/images/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getImages(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+
+app.post('/api/v1/images/delete', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await deleteImages(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
 app.listen(port);
