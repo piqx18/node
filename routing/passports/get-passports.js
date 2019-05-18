@@ -27,7 +27,7 @@ const transformItems = (passports, restoreItems, placeOfSaves) => {
     let resultArray = []
     for (let i = 0; i < passports.length; i++) {
         let currentRestoreItem = restoreItems.filter(item => item.id === passports[i].item_id)
-        let currentPlaceOfSave = placeOfSaves.filter(item => item.id === passports[i].place_of_save)
+        let currentPlaceOfSave = placeOfSaves.filter(item => item.id === passports[i].place_of_save_id)
         let transformItem = {
             id: passports[i].id,
             restoreItem: currentRestoreItem[0],
@@ -66,7 +66,7 @@ const getPassports = async(params) => {
         }
     }
     const restoreItemsIds = obtainedPassports.map(items => items.item_id)
-    const placeOfSaveIds = obtainedPassports.map(item => item.place_of_save)
+    const placeOfSaveIds = obtainedPassports.map(item => item.place_of_save_id)
     const restoreItems = await getRestoreItem({ids: restoreItemsIds})
     const getPlaceOfSave = await getPlaceOFSave({ids: placeOfSaveIds})
     const resultArray = transformItems(obtainedPassports, restoreItems.objects, getPlaceOfSave.objects)

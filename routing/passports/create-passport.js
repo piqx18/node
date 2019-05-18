@@ -18,7 +18,7 @@ const checkRestoreItem = async(restoreItemId) => {
 }
 
 const insertPassport = async(params) => {
-    const query = `INSERT INTO passport(director, item_id, reasons_for_rest, size, place_of_save, date_of_transfer, spec_conditions, 
+    const query = `INSERT INTO passport(director, item_id, reasons_for_rest, size, place_of_save_id, date_of_transfer, spec_conditions, 
         base_history, status_visual, status_general, events_result, concludion, recomends, transfered, work_head, performers, created, act, program, protocol, end_date) 
         VALUES 
         ('${params.director}', '${params.itemId}', '${params.reasonForRest}', '${params.size}','${params.placeOfSave}','${params.dateOfTransfer}','${params.specConditions}',
