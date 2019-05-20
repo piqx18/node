@@ -44,6 +44,9 @@ const formidable = require('express-formidable');
 const createPlaceOfSave = require('./routing/place-of-save/create-place-of-save')
 const getPlaceOfSave = require('./routing/place-of-save/get-place-of-save')
 const deletePlaceOfSave = require('./routing/place-of-save/delete-place-of-save')
+const createProtocol = require('./routing/protocol/create-protocol')
+const createProtocols = require('./routing/protocol/create-protocol-passport')
+const getProtocols = require('./routing/protocol/get-protocols')
 
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'root'
@@ -826,6 +829,63 @@ app.post('/api/v1/events-passport/delete', async(request, response) => {
         response.send({ error: ex.toString()})
     }
 })
+app.post('/api/v1/protocols/create', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createProtocol(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+app.post('/api/v1/protocols/get', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await getProtocols(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
+app.post('/api/v1/protocols-passport/create', async(request, response) => {
+    try {
+        let params = request.body;
+        if (!request.headers.token || request.headers.token !== token) {
+            response.header('Content-Type', 'application/json');
+            response.send(answerAccessDenied());
+        }
+        else {
+            await createProtocols(params).then(result => {
+                console.log(JSON.stringify(result))
+                response.send(result)
+            });
+        }
+    }
+    catch(ex){
+        console.error(JSON.stringify(ex))
+        response.send({ error: ex.toString()})
+    }
+})
 
 app.use(formidable({
     uploadDir: './uploads',
@@ -865,7 +925,6 @@ app.get('/api/v1/getImage', async(request, response) => {
         response.send({ error: ex.toString()})
     }
 })
-
 app.post('/api/v1/images/get', async(request, response) => {
     try {
         let params = request.body;
@@ -905,4 +964,6 @@ app.post('/api/v1/images/delete', async(request, response) => {
         response.send({ error: ex.toString()})
     }
 })
+
+
 app.listen(port);
